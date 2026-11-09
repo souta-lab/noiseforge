@@ -146,13 +146,13 @@ fn every_colour_and_character_is_accepted_and_stays_verified() {
     for color in ["white", "pink", "brown", "blue", "violet", "custom"] {
         for character in ["neutral", "smooth", "intense"] {
             ok(c.call(&Request::Set {
-                args: SetArgs {
+                args: Box::new(SetArgs {
                     color: Some(color.into()),
                     alpha: Some(1.3),
                     character: Some(character.into()),
                     intensity: Some(0.8),
                     ..Default::default()
-                },
+                }),
             })
             .unwrap());
             let r = ok(c.call(&Request::Status).unwrap());
@@ -181,10 +181,10 @@ fn the_level_target_is_honoured_as_the_graph_changes() {
     let mut c = h.client();
     for target in [-60.0, -42.0, -36.0, -18.0] {
         ok(c.call(&Request::Set {
-            args: SetArgs {
+            args: Box::new(SetArgs {
                 level_rms_dbfs: Some(target),
                 ..Default::default()
-            },
+            }),
         })
         .unwrap());
         let r = ok(c.call(&Request::Status).unwrap());
@@ -240,13 +240,13 @@ fn presets_survive_a_save_load_cycle() {
     let h = Harness::start();
     let mut c = h.client();
     ok(c.call(&Request::Set {
-        args: SetArgs {
+        args: Box::new(SetArgs {
             color: Some("brown".into()),
             character: Some("intense".into()),
             intensity: Some(0.55),
             high_pass: Some(28.0),
             ..Default::default()
-        },
+        }),
     })
     .unwrap());
     ok(c.call(&Request::PresetSave {
@@ -256,10 +256,10 @@ fn presets_survive_a_save_load_cycle() {
 
     // Change away, then load it back.
     ok(c.call(&Request::Set {
-        args: SetArgs {
+        args: Box::new(SetArgs {
             color: Some("white".into()),
             ..Default::default()
-        },
+        }),
     })
     .unwrap());
     ok(c.call(&Request::PresetLoad {
@@ -328,10 +328,10 @@ fn out_of_range_arguments_are_clamped_and_reported() {
     // Alpha only means something for the custom colour, which must be said.
     let r = ok(c
         .call(&Request::Set {
-            args: SetArgs {
+            args: Box::new(SetArgs {
                 alpha: Some(2.0),
                 ..Default::default()
-            },
+            }),
         })
         .unwrap());
     assert!(
@@ -342,14 +342,14 @@ fn out_of_range_arguments_are_clamped_and_reported() {
 
     let r = ok(c
         .call(&Request::Set {
-            args: SetArgs {
+            args: Box::new(SetArgs {
                 color: Some("custom".into()),
                 alpha: Some(1000.0),
                 intensity: Some(-5.0),
                 stereo: Some(9.0),
                 level_rms_dbfs: Some(-500.0),
                 ..Default::default()
-            },
+            }),
         })
         .unwrap());
     assert!(!r.notes.is_empty(), "clamping must be reported, not hidden");
@@ -439,7 +439,7 @@ fn status_is_within_the_message_size_limit_for_eight_layers() {
     for i in 0..7 {
         ok(c.call(&Request::LayerAdd { after: None }).unwrap());
         ok(c.call(&Request::Set {
-            args: SetArgs {
+            args: Box::new(SetArgs {
                 layer: Some(i + 1),
                 color: Some("custom".into()),
                 alpha: Some(-4.0 + i as f64),
@@ -447,7 +447,7 @@ fn status_is_within_the_message_size_limit_for_eight_layers() {
                 intensity: Some(1.0),
                 gain_db: Some(-3.0),
                 ..Default::default()
-            },
+            }),
         })
         .unwrap());
     }
@@ -571,7 +571,10 @@ fn a_gui_session_takes_over_from_a_cli_hold() {
         if !s.playing {
             break;
         }
-        assert!(Instant::now() < deadline, "the GUI session did not take over");
+        assert!(
+            Instant::now() < deadline,
+            "the GUI session did not take over"
+        );
         std::thread::sleep(Duration::from_millis(50));
     }
 }

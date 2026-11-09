@@ -230,7 +230,11 @@ fn run_window(
         native_options,
         Box::new(move |cc| {
             report_gpu(cc, renderer);
-            Ok(Box::new(App::new(gui_options, cc.egui_ctx.clone(), !info_only)))
+            Ok(Box::new(App::new(
+                gui_options,
+                cc.egui_ctx.clone(),
+                !info_only,
+            )))
         }),
     )
 }

@@ -472,7 +472,12 @@ impl App {
         };
         edit(&mut args);
         self.echo_hold_until = Some(Instant::now() + ECHO_HOLD);
-        self.send_request(label, Request::Set { args });
+        self.send_request(
+            label,
+            Request::Set {
+                args: Box::new(args),
+            },
+        );
     }
 
     /// Send a read-modify-write command and hold the drafts.

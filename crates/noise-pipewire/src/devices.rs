@@ -88,11 +88,11 @@ pub fn list_with_timeout(timeout: Duration) -> Result<Vec<SinkInfo>, DeviceError
                     return;
                 }
                 // WirePlumber stamps the default node with this property.
-                if props.get("default.audio.sink").is_some() || props.get("node.default").is_some()
+                if (props.get("default.audio.sink").is_some()
+                    || props.get("node.default").is_some())
+                    && let Ok(mut d) = default_name.lock()
                 {
-                    if let Ok(mut d) = default_name.lock() {
-                        *d = Some(name);
-                    }
+                    *d = Some(name);
                 }
             }
         })

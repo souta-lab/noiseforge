@@ -15,7 +15,7 @@
 //! Those two are different threads, so anything the process callback reads is
 //! either immutable after start-up or guarded by an atomic. In particular the
 //! engine is never rebuilt underneath a running callback: a sample rate change
-//! quiesces the stream through [`Reconfiguration`], rebuilds, and resumes.
+//! quiesces the stream through `Reconfiguration`, rebuilds, and resumes.
 
 use std::sync::Arc;
 use std::sync::atomic::{AtomicBool, AtomicU32, Ordering};
