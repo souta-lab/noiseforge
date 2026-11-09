@@ -1,0 +1,30 @@
+[package]
+name = "noise-gui"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+description = "The NoiseForge control window (egui/eframe)."
+
+[[bin]]
+name = "noise-gui"
+path = "src/main.rs"
+
+[dependencies]
+noise-dsp.workspace = true
+noise-daemon.workspace = true
+eframe.workspace = true
+egui.workspace = true
+serde_json.workspace = true
+egui_plot.workspace = true
+# eframe re-exports glow and wgpu but not winit, and pinning the windowing
+# backend needs winit's platform extension traits (`with_wayland`/`with_x11`).
+# The alternative, `std::env::set_var("WINIT_UNIX_BACKEND", ..)`, is `unsafe`
+# since edition 2024 and this crate forbids unsafe code. Cargo unifies this with
+# the winit that eframe already builds.
+winit = "0.30"
+
+[features]
+# Opt-in Vulkan backend. Off by default because the wgpu dependency tree is
+# large and OpenGL through EGL is already GPU accelerated.
+wgpu = ["eframe/wgpu"]

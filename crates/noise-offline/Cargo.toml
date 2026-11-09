@@ -1,0 +1,17 @@
+[package]
+name = "noise-offline"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+description = "Offline noise rendering, Welch PSD analysis and WAV writing for NoiseForge."
+
+[dependencies]
+noise-dsp.workspace = true
+rustfft.workspace = true
+hound.workspace = true
+serde.workspace = true
+thiserror.workspace = true
+
+[dev-dependencies]
+tempfile.workspace = true

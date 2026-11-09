@@ -1,0 +1,8 @@
+[Desktop Entry]
+Type=Application
+Name=NoiseForge (terminal)
+Comment=Control the NoiseForge daemon from a terminal
+Exec=x-terminal-emulator -e noiseforge status
+Icon=utilities-terminal
+Terminal=true
+Categories=Audio;AudioVideo;ConsoleOnly;

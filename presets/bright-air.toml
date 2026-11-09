@@ -1,0 +1,42 @@
+# Bright Air: a blue and a violet layer mixed, with a wide stereo image. Both
+# layers are independent (different seeds), so the mix is uncorrelated and the
+# analytic calibration applies exactly.
+schema_version = 1
+graph_version = 1
+name = "Bright Air"
+sample_rate_policy = "follow_pipewire"
+seed = 2026
+
+[master]
+target_rms_dbfs = -48.0
+volume_db = 0.0
+mute = false
+fade_in_ms = 200.0
+fade_out_ms = 500.0
+ramp_ms = 20.0
+limiter_enabled = false
+limiter_ceiling_dbfs = -1.0
+
+[[layers]]
+enabled = true
+name = "Hiss"
+color = "blue"
+alpha = -1.0
+character = "neutral"
+character_amount = 0.0
+high_pass_hz = 200.0
+low_pass_hz = 18000.0
+stereo_correlation = 0.0
+gain_db = 0.0
+
+[[layers]]
+enabled = true
+name = "Shimmer"
+color = "violet"
+alpha = -2.0
+character = "neutral"
+character_amount = 0.0
+high_pass_hz = 2000.0
+low_pass_hz = 20000.0
+stereo_correlation = 0.0
+gain_db = -6.0

@@ -1,0 +1,12 @@
+[Desktop Entry]
+Type=Application
+Name=NoiseForge
+GenericName=Noise Generator
+Comment=Generate mathematically defined white, pink, brown, blue and violet noise
+Exec=noiseforge-gui
+Icon=noiseforge
+Terminal=false
+Categories=Audio;AudioVideo;Music;
+Keywords=noise;white noise;pink noise;brown noise;generator;ambient;
+StartupNotify=true
+StartupWMClass=noiseforge-gui

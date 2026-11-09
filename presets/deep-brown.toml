@@ -1,0 +1,30 @@
+# Deep Brown: the full 1/f^2 tilt, no character EQ, low pass kept wide so the
+# slope is visible across the whole band. Heavy low end, so the level target is
+# conservative.
+schema_version = 1
+graph_version = 1
+name = "Deep Brown"
+sample_rate_policy = "follow_pipewire"
+seed = 7
+
+[master]
+target_rms_dbfs = -42.0
+volume_db = 0.0
+mute = false
+fade_in_ms = 200.0
+fade_out_ms = 600.0
+ramp_ms = 25.0
+limiter_enabled = false
+limiter_ceiling_dbfs = -1.0
+
+[[layers]]
+enabled = true
+name = "Rumble"
+color = "brown"
+alpha = 2.0
+character = "neutral"
+character_amount = 0.0
+high_pass_hz = 20.0
+low_pass_hz = 16000.0
+stereo_correlation = 0.85
+gain_db = 0.0

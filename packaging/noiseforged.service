@@ -1,0 +1,43 @@
+# NoiseForge daemon as a systemd user service.
+#
+# Optional: the daemon works without systemd, and `noiseforge status` starts it
+# on demand when no daemon is listening (DESIGN.md section 6).
+#
+#   install -Dm644 packaging/noiseforged.service ~/.config/systemd/user/
+#   systemctl --user daemon-reload
+#   systemctl --user enable --now noiseforged.service
+#
+# Check the journal with `journalctl --user -u noiseforged -f`.
+
+[Unit]
+Description=NoiseForge coloured noise generator
+Documentation=man:noiseforge(1)
+# Only useful once the sound server is up.
+After=pipewire.service wireplumber.service
+Wants=pipewire.service
+PartOf=graphical-session.target
+ConditionUser=!root
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/noiseforged --keep-playing
+# `--autoplay` would start generating as soon as the format is negotiated. Leave
+# it off so a login does not silently make noise; `noiseforge play` starts it.
+# ExecStart=/usr/bin/noiseforged --keep-playing --autoplay
+Restart=on-failure
+RestartSec=2
+# The daemon is a realtime audio client: keep its scheduling class.
+Nice=-11
+# Modest hardening. The daemon needs no network and writes only to the XDG
+# configuration and runtime directories.
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=read-only
+ReadWritePaths=%t %E/noiseforge
+RestrictNamespaces=true
+RestrictRealtime=false
+LockPersonality=true
+
+[Install]
+WantedBy=default.target

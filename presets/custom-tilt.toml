@@ -1,0 +1,30 @@
+# Custom Tilt: an in-between exponent, showing the custom alpha path. 1.35 is
+# close to pink but with a little more low end; the measured shape error is
+# printed by `noiseforge status` and `noiseforge render --analyze`.
+schema_version = 1
+graph_version = 1
+name = "Custom Tilt"
+sample_rate_policy = "follow_pipewire"
+seed = 1337
+
+[master]
+target_rms_dbfs = -42.0
+volume_db = 0.0
+mute = false
+fade_in_ms = 100.0
+fade_out_ms = 300.0
+ramp_ms = 20.0
+limiter_enabled = false
+limiter_ceiling_dbfs = -1.0
+
+[[layers]]
+enabled = true
+name = "Tilt"
+color = "custom"
+alpha = 1.35
+character = "neutral"
+character_amount = 0.0
+high_pass_hz = 30.0
+low_pass_hz = 16000.0
+stereo_correlation = 0.5
+gain_db = 0.0

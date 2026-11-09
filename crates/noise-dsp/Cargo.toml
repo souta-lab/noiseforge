@@ -1,0 +1,13 @@
+[package]
+name = "noise-dsp"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+description = "Realtime-safe DSP core for NoiseForge: colored noise generation, character filters, stereo, mixing."
+
+[dependencies]
+serde.workspace = true
+
+[dev-dependencies]
+toml.workspace = true

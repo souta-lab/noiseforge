@@ -1,0 +1,32 @@
+# Soft Pink: the everyday default. Pink noise with the high end taken down a
+# little and a modest stereo spread, calibrated to -42 dBFS RMS.
+#
+#   noiseforge preset save "Soft Pink"   # to write your own
+#   cp presets/soft-pink.toml ~/.config/noiseforge/presets/"Soft Pink.toml"
+schema_version = 1
+graph_version = 1
+name = "Soft Pink"
+sample_rate_policy = "follow_pipewire"
+seed = 42
+
+[master]
+target_rms_dbfs = -42.0
+volume_db = 0.0
+mute = false
+fade_in_ms = 150.0
+fade_out_ms = 400.0
+ramp_ms = 20.0
+limiter_enabled = false
+limiter_ceiling_dbfs = -1.0
+
+[[layers]]
+enabled = true
+name = "Main"
+color = "pink"
+alpha = 1.0
+character = "smooth"
+character_amount = 0.70
+high_pass_hz = 35.0
+low_pass_hz = 16000.0
+stereo_correlation = 0.35
+gain_db = 0.0

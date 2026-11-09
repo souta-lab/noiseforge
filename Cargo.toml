@@ -1,0 +1,91 @@
+[workspace]
+resolver = "3"
+members = ["crates/*"]
+
+[workspace.package]
+version = "0.1.0"
+edition = "2024"
+rust-version = "1.95"
+license = "MIT OR Apache-2.0"
+repository = "https://example.invalid/noiseforge"
+authors = ["NoiseForge contributors"]
+
+[workspace.dependencies]
+noise-dsp = { path = "crates/noise-dsp" }
+noise-pipewire = { path = "crates/noise-pipewire" }
+noise-daemon = { path = "crates/noise-daemon" }
+noise-cli = { path = "crates/noise-cli" }
+noise-gui = { path = "crates/noise-gui" }
+noise-offline = { path = "crates/noise-offline" }
+
+serde = { version = "1.0.229", features = ["derive"] }
+serde_json = "1.0.151"
+toml = "1.1.8"
+anyhow = "1.0.104"
+thiserror = "2.0.21"
+clap = { version = "4.6.7", features = ["derive", "env"] }
+rtrb = "0.4.0"
+rustfft = "6.4.1"
+hound = "3.5.1"
+libc = "0.2.190"
+dirs = "7.0.0"
+tempfile = "3.27.0"
+pipewire = "0.10.1"
+# `glow` is OpenGL through EGL on Wayland, which is hardware accelerated on any
+# Mesa or proprietary driver and keeps the dependency tree small (DESIGN.md
+# section 8.1 asks for no needlessly large framework). It is the default.
+#
+# `cargo build -p noise-gui --features noise-gui/wgpu` swaps in the Vulkan backend
+# instead; `crates/noise-gui` selects it at runtime with `--renderer wgpu` and
+# falls back to OpenGL when no adapter is usable.
+eframe = { version = "0.36.2", default-features = false, features = [
+    "default_fonts",
+    "glow",
+    "wayland",
+    "x11",
+] }
+egui = "0.36.2"
+# egui_plot version numbers no longer track egui's: 0.37 is the release that
+# pairs with egui 0.36 (the 0.36 line stops at 0.36.0).
+egui_plot = "0.37"
+
+# The workspace root is also a package: an umbrella crate that exists so the
+# top-level `tests/` and `benches/` directories described in DESIGN.md section 8
+# have a package to belong to.
+[package]
+name = "noiseforge"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+publish = false
+description = "NoiseForge umbrella crate hosting workspace-level integration tests and benches."
+
+[dependencies]
+noise-dsp.workspace = true
+noise-daemon.workspace = true
+noise-offline.workspace = true
+noise-pipewire.workspace = true
+
+[dev-dependencies]
+serde_json.workspace = true
+tempfile.workspace = true
+anyhow.workspace = true
+toml.workspace = true
+
+[[bench]]
+name = "render"
+harness = false
+
+# `codegen-units = 1` and link time optimisation are deliberately left to the
+# benchmark profile. They make every *dependency* rebuild slowly, and the DSP is
+# already two orders of magnitude inside its CPU budget without them (see
+# benches/render.rs), so the normal release profile stays quick to build.
+[profile.release]
+codegen-units = 16
+panic = "unwind"
+debug = 1
+
+[profile.bench]
+lto = "thin"
+codegen-units = 1
