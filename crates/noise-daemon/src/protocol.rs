@@ -101,7 +101,7 @@ pub enum Request {
     Stop,
     /// Patch fields of the current preset.
     Set {
-        args: SetArgs,
+        args: Box<SetArgs>,
     },
     /// Replace the whole preset.
     Load {
@@ -155,7 +155,9 @@ pub enum Request {
     /// somebody holds it, which is what makes closing the window silence the
     /// noise while `noiseforge play` keeps running until `noiseforge stop`.
     /// Both the GUI and `noiseforge stop` release the hold.
-    Hold { hold: bool },
+    Hold {
+        hold: bool,
+    },
     /// Register for periodic telemetry pushes on this connection.
     Subscribe {
         #[serde(default)]
@@ -455,11 +457,11 @@ mod tests {
     #[test]
     fn request_round_trips() {
         let r = Request::Set {
-            args: SetArgs {
+            args: Box::new(SetArgs {
                 color: Some("pink".into()),
                 intensity: Some(0.7),
                 ..Default::default()
-            },
+            }),
         };
         let line = encode(&r).unwrap();
         assert_eq!(line.last(), Some(&b'\n'));

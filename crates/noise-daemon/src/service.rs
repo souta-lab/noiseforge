@@ -311,14 +311,11 @@ impl Service {
                     None
                 }
             };
-            match request {
-                Some((id, request)) => {
-                    let response = self.handle(index, id, request);
-                    if let Err(e) = self.clients[index].conn.send(&response) {
-                        tracing::debug!("client send failed: {e}");
-                    }
+            if let Some((id, request)) = request {
+                let response = self.handle(index, id, request);
+                if let Err(e) = self.clients[index].conn.send(&response) {
+                    tracing::debug!("client send failed: {e}");
                 }
-                None => {}
             }
             if self.clients[index].conn.is_closed() || self.clients[index].conn.done {
                 self.clients.swap_remove(index);

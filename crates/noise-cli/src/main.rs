@@ -499,15 +499,18 @@ fn dispatch(client: &mut Client, command: Commands, json: bool) -> CliResult {
             {
                 args.layer = None;
             }
-            report(client.call(&Request::Set { args })?, json)?;
+            report(
+                client.call(&Request::Set {
+                    args: Box::new(args),
+                })?,
+                json,
+            )?;
             // The daemon fades out when the last client leaves unless somebody
             // holds it; `play` is exactly the request to keep going.
             ok(client.call(&Request::Hold { hold: true })?)?;
             report(client.call(&Request::Play)?, json)?;
             if !json {
-                eprintln!(
-                    "noiseforge: playing in the background; `noiseforge stop` stops it"
-                );
+                eprintln!("noiseforge: playing in the background; `noiseforge stop` stops it");
             }
             Ok(())
         }
@@ -554,7 +557,12 @@ fn dispatch(client: &mut Client, command: Commands, json: bool) -> CliResult {
                 limiter_ceiling_dbfs,
                 ..Default::default()
             };
-            report(client.call(&Request::Set { args })?, json)
+            report(
+                client.call(&Request::Set {
+                    args: Box::new(args),
+                })?,
+                json,
+            )
         }
         Commands::Color {
             color,
@@ -567,7 +575,12 @@ fn dispatch(client: &mut Client, command: Commands, json: bool) -> CliResult {
                 layer: Some(layer),
                 ..Default::default()
             };
-            report(client.call(&Request::Set { args })?, json)
+            report(
+                client.call(&Request::Set {
+                    args: Box::new(args),
+                })?,
+                json,
+            )
         }
         Commands::Character {
             character,
@@ -580,7 +593,12 @@ fn dispatch(client: &mut Client, command: Commands, json: bool) -> CliResult {
                 layer: Some(layer),
                 ..Default::default()
             };
-            report(client.call(&Request::Set { args })?, json)
+            report(
+                client.call(&Request::Set {
+                    args: Box::new(args),
+                })?,
+                json,
+            )
         }
         Commands::Layer { action } => dispatch_layer(client, action, json),
         Commands::Preset { action } => dispatch_preset(client, action, json),

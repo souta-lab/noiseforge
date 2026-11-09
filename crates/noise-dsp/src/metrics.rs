@@ -174,7 +174,7 @@ pub fn layer_response(
 ///
 /// `mono_factor` is the variance factor of the output downmix: `1.0` for a
 /// stereo sink (each channel keeps the layer RMS) and
-/// [`StereoMatrix::mono_downmix_variance_factor`] for a mono sink.
+/// [`crate::stereo::StereoMatrix::mono_downmix_variance_factor`] for a mono sink.
 pub fn calibrate(
     fs: f64,
     responses: &[Option<LayerResponse>],
