@@ -1,4 +1,19 @@
-# NoiseForge
+<div align="center">
+
+# 🔊 NoiseForge
+
+### Realtime, mathematically defined noise generation for Linux — built natively on PipeWire.
+
+![Rust](https://img.shields.io/badge/Rust-000000?logo=rust&logoColor=fff)
+![PipeWire](https://img.shields.io/badge/PipeWire-native-FF6600)
+![License](https://img.shields.io/badge/license-MIT_OR_Apache--2.0-blue)
+![noise colors](https://img.shields.io/badge/colors-white_|_pink_|_brown_|_blue_|_violet-8b5cf6)
+
+</div>
+
+> 🎧 NoiseForge does not loop samples. It generates noise **live** from a seeded PRNG and a cascade of IIR shaping filters — white, pink, brown, blue and violet noise at any length, at any sample rate the server negotiates, always reproducible from a seed.
+
+---
 
 Realtime, mathematically defined noise generation for Linux, built natively on
 PipeWire.
@@ -17,7 +32,7 @@ reproducible from a seed.
         +-> peak monitor -> optional explicit limiter -> PipeWire F32LE
 ```
 
-## What is implemented
+## 🧩 What is implemented
 
 | Component | Crate | State |
 |---|---|---|
@@ -30,7 +45,7 @@ reproducible from a seed.
 | Spectral accuracy study | `noise-dsp --example design_study` | complete |
 | Render benchmark | `benches/render.rs` | complete |
 
-## Measured results
+## 📈 Measured results
 
 Everything below was measured on the development machine (Intel i5-8400, PipeWire
 1.6.9, Rust 1.96.1) and is reproducible with the commands shown. Nothing here is
@@ -90,7 +105,7 @@ The analytic calibration lands on its target to within a fraction of a dB in
 normal use, because it computes the exact expected RMS of the whole configured
 graph rather than tracking it per sample.
 
-## Building
+## 🔨 Building
 
 Requires Rust 1.95 or later (edition 2024) and the PipeWire development headers:
 
@@ -103,7 +118,7 @@ cargo build --release
 The GUI additionally needs the usual windowing libraries (Wayland or X11, GL,
 xkbcommon, fontconfig); they are present on any desktop install.
 
-## Running
+## ▶️ Running
 
 ```sh
 # Start the daemon (also starts on demand from the CLI or GUI).
@@ -135,7 +150,7 @@ A connecting GUI takes over from a CLI hold, which is why closing the window is
 silent even after an earlier `noiseforge play`. `noiseforge shutdown` stops the
 daemon outright.
 
-## GUI
+## 🖥 GUI
 
 `noiseforge-gui` uses egui/eframe and renders **on the GPU**: `wgpu` (Vulkan) by
 default, with `glow` (OpenGL/EGL) as a fallback if no Vulkan adapter is usable.
@@ -185,7 +200,7 @@ noiseforge render pink --seconds 600 --wav pink.flac.wav --format i24 --analyze
 
 `--analyze` prints the Welch-measured slope next to the theoretical one.
 
-## Presets and configuration
+## 🎛 Presets and configuration
 
 TOML, versioned, saved atomically under `$XDG_CONFIG_HOME/noiseforge/`
 (`~/.config/noiseforge/` by default). Four factory presets ship in `presets/`:
@@ -197,7 +212,7 @@ TOML, versioned, saved atomically under `$XDG_CONFIG_HOME/noiseforge/`
 
 Copy one into `~/.config/noiseforge/presets/` to use it by name.
 
-## Testing
+## ✅ Testing
 
 ```sh
 cargo fmt --all --check
@@ -214,7 +229,7 @@ The test suite covers the spectral acceptance criteria, bit-exact determinism
 across buffer sizes, zero realtime allocation, click-free parameter changes under
 adversarial traffic, the IPC contract, preset robustness and a long soak.
 
-## Honest limitations
+## ⚠️ Honest limitations
 
 * The shaping filters are finite-order IIR. Accuracy is guaranteed and measured
   over **40 Hz to 16 kHz** (`min(16000, 0.42 · Fs)`), not to Nyquist. Outside
@@ -229,7 +244,7 @@ adversarial traffic, the IPC contract, preset robustness and a long soak.
 * Multi-channel output beyond stereo writes silence to the extra channels.
 * Recording to file is done by `noiseforge render`, not by the daemon.
 
-## Layout
+## 🗂 Layout
 
 ```
 noiseforge/
